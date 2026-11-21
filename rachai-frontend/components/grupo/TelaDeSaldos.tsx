@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { useGrupo } from "@/components/grupo/GrupoContexto";
 import { AvisoDeErro, Cartao, Dinheiro, Etiqueta } from "@/components/ui";
 import { api } from "@/lib/api/rachai";
-import type { Centavos, SaldosDoGrupo, TransferenciaSugerida } from "@/lib/api/tipos";
+import type { Centavos, GrupoId, SaldosDoGrupo, TransferenciaSugerida } from "@/lib/api/tipos";
 import { useRecurso } from "@/lib/useRecurso";
 
 /**
@@ -22,6 +22,14 @@ export function TelaDeSaldos() {
   if (estado.tipo === "erro") return <AvisoDeErro erro={estado.erro} />;
   return <Saldos dados={estado.dados} />;
 }
+
+/** Link para a tela de Pagamento já preenchida com a Transferência sugerida (só copia os números). */
+function linkDePagamento(grupoId: GrupoId, t: TransferenciaSugerida) {
+  return `/grupos/${grupoId}/pagamentos?de=${t.de_membro_id}&para=${t.para_membro_id}&valor=${t.valor_centavos}`;
+}
+
+const CLASSES_DO_LINK =
+  "inline-flex h-8 items-center rounded-full border border-borda-vidro bg-vidro px-3 text-xs font-semibold text-texto transition-colors hover:bg-vidro-forte";
 
 /** Texto ao lado da cor, para a informação não depender só do vermelho e do verde. */
 function situacao(centavos: Centavos) {
@@ -73,6 +81,9 @@ function Saldos({ dados }: { dados: SaldosDoGrupo }) {
                     <>
                       Pague <Dinheiro centavos={t.valor_centavos} className="font-semibold" /> para{" "}
                       <span className="font-medium text-texto">{nomeDe(t.para_membro_id)}</span>
+                      <Link href={linkDePagamento(grupo.id, t)} className={`${CLASSES_DO_LINK} ml-2`}>
+                        Registrar Pagamento
+                      </Link>
                     </>
                   ) : (
                     <>
@@ -135,7 +146,7 @@ function Saldos({ dados }: { dados: SaldosDoGrupo }) {
 }
 
 function LinhaDaTransferencia({ transferencia: t }: { transferencia: TransferenciaSugerida }) {
-  const { eu, nomeDe } = useGrupo();
+  const { grupo, eu, nomeDe } = useGrupo();
   const envolveEu = eu !== null && (t.de_membro_id === eu.id || t.para_membro_id === eu.id);
   return (
     <li
@@ -150,7 +161,16 @@ function LinhaDaTransferencia({ transferencia: t }: { transferencia: Transferenc
         <span className="sr-only"> paga para </span>
         <span className="text-texto">{nomeDe(t.para_membro_id)}</span>
       </span>
-      <Dinheiro centavos={t.valor_centavos} className="font-semibold" />
+      <span className="flex items-center gap-3">
+        <Dinheiro centavos={t.valor_centavos} className="font-semibold" />
+        <Link
+          href={linkDePagamento(grupo.id, t)}
+          className={CLASSES_DO_LINK}
+          aria-label={`Registrar Pagamento de ${nomeDe(t.de_membro_id)} para ${nomeDe(t.para_membro_id)}`}
+        >
+          Registrar
+        </Link>
+      </span>
     </li>
   );
 }

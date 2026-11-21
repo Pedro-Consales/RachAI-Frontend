@@ -16,6 +16,7 @@ const ABAS = [
   { caminho: "", rotulo: "Membros" },
   { caminho: "/despesas", rotulo: "Despesas" },
   { caminho: "/saldos", rotulo: "Saldos" },
+  { caminho: "/pagamentos", rotulo: "Pagamentos" },
 ] as const;
 
 type Props = {

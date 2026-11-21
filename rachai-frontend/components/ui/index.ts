@@ -7,3 +7,4 @@ export { Etiqueta } from "./Etiqueta";
 export { EscolhaDeOpcao } from "./EscolhaDeOpcao";
 export { BotaoCopiar } from "./BotaoCopiar";
 export { Selecao } from "./Selecao";
+export { BarraDeProgresso } from "./BarraDeProgresso";

@@ -17,6 +17,7 @@ const ABAS = [
   { caminho: "/despesas", rotulo: "Despesas" },
   { caminho: "/saldos", rotulo: "Saldos" },
   { caminho: "/pagamentos", rotulo: "Pagamentos" },
+  { caminho: "/vaquinhas", rotulo: "Vaquinhas" },
 ] as const;
 
 type Props = {
@@ -99,7 +100,7 @@ function Cabecalho() {
 function Abas({ grupoId }: { grupoId: GrupoId }) {
   const caminhoAtual = usePathname();
   return (
-    <nav aria-label="Seções do Grupo" className="flex gap-1 overflow-x-auto shadow-[inset_0_-1px_0_rgb(255_255_255/0.1)] [scrollbar-width:none]">
+    <nav aria-label="Seções do Grupo" className="flex flex-wrap gap-x-1 shadow-[inset_0_-1px_0_rgb(255_255_255/0.1)]">
       {ABAS.map((aba) => {
         const href = `/grupos/${grupoId}${aba.caminho}`;
         const ativa = caminhoAtual === href;

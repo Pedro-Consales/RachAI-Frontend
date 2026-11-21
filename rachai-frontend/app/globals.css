@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Tokens do RachAÍ: um lugar só para cor, vidro, raio e sombra.
+ * Contraste mínimo 4.5:1 sobre o cartão de vidro em cima do fundo azul:
+ *   texto-suave (72% branco)  ≈ 6:1
+ *   divida  #FCA5A5           ≈ 4.9:1  (red-400 daria ~3.5:1, reprovado)
+ *   credito #4ADE80           ≈ 6:1
+ *   acento como fundo de botão, com texto fundo-1 ≈ 9:1
+ */
+@theme {
+  --color-fundo-1: #0b1e3d;
+  --color-fundo-2: #16326b;
+  --color-eletrico: #3b82f6;
+  --color-acento: #22d3ee;
+  --color-acento-forte: #67e8f9;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-texto: #ffffff;
+  --color-texto-suave: rgb(255 255 255 / 0.72);
+
+  --color-vidro: rgb(255 255 255 / 0.08);
+  --color-vidro-forte: rgb(255 255 255 / 0.12);
+  --color-borda-vidro: rgb(255 255 255 / 0.18);
+
+  /* Vermelho só para dívida e erro; verde só para crédito e quitado. */
+  --color-divida: #fca5a5;
+  --color-credito: #4ade80;
+
+  --radius-cartao: 16px;
+  --shadow-vidro: 0 8px 32px rgb(3 10 30 / 0.25);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Aliases usados pela tela /health, anterior ao design system. */
+@theme inline {
+  --color-background: var(--color-fundo-1);
+  --color-foreground: var(--color-texto);
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  min-height: 100dvh;
+  color: var(--color-texto-suave);
+  background: linear-gradient(160deg, var(--color-fundo-1) 0%, var(--color-fundo-2) 100%) fixed;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Duas manchas de luz desfocadas, fixas atrás de tudo. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  width: 42rem;
+  height: 42rem;
+  border-radius: 9999px;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+body::before {
+  top: -14rem;
+  left: -12rem;
+  background: var(--color-eletrico);
+  opacity: 0.28;
+}
+
+body::after {
+  bottom: -16rem;
+  right: -14rem;
+  background: var(--color-acento);
+  opacity: 0.16;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    color: var(--color-texto);
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

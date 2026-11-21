@@ -15,6 +15,7 @@ import { GrupoContexto, useGrupo, type ContextoDoGrupo } from "./GrupoContexto";
 const ABAS = [
   { caminho: "", rotulo: "Membros" },
   { caminho: "/despesas", rotulo: "Despesas" },
+  { caminho: "/saldos", rotulo: "Saldos" },
 ] as const;
 
 type Props = {

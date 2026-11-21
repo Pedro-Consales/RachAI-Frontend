@@ -12,7 +12,10 @@ import { useRecurso } from "@/lib/useRecurso";
 import { GrupoContexto, useGrupo, type ContextoDoGrupo } from "./GrupoContexto";
 
 /** Abas do Grupo. Cada tela nova entra aqui no PR dela. */
-const ABAS = [{ caminho: "", rotulo: "Membros" }] as const;
+const ABAS = [
+  { caminho: "", rotulo: "Membros" },
+  { caminho: "/despesas", rotulo: "Despesas" },
+] as const;
 
 type Props = {
   params: Promise<{ id: string }>;

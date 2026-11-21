@@ -5,3 +5,4 @@ export { Cartao } from "./Cartao";
 export { Dinheiro } from "./Dinheiro";
 export { Etiqueta } from "./Etiqueta";
 export { BotaoCopiar } from "./BotaoCopiar";
+export { Selecao } from "./Selecao";

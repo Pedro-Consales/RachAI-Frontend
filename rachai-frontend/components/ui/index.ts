@@ -4,5 +4,6 @@ export { Campo } from "./Campo";
 export { Cartao } from "./Cartao";
 export { Dinheiro } from "./Dinheiro";
 export { Etiqueta } from "./Etiqueta";
+export { EscolhaDeOpcao } from "./EscolhaDeOpcao";
 export { BotaoCopiar } from "./BotaoCopiar";
 export { Selecao } from "./Selecao";

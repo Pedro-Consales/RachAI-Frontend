@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useState, type FormEvent } from "react";
 import { useGrupo } from "@/components/grupo/GrupoContexto";
-import { AvisoDeErro, Botao, Campo, Cartao, Dinheiro, Selecao } from "@/components/ui";
+import { AvisoDeErro, Botao, Campo, Cartao, Dinheiro, EscolhaDeOpcao, Selecao } from "@/components/ui";
 import { api } from "@/lib/api/rachai";
 import type { Cota, Despesa, MembroId, PedidoDeDivisao } from "@/lib/api/tipos";
 import { formatarData } from "@/lib/data";
@@ -79,6 +79,11 @@ function LinhaDaDespesa({ despesa }: { despesa: Despesa }) {
 }
 
 type Modo = PedidoDeDivisao["modo"];
+
+const OPCOES_DE_MODO: { valor: Modo; rotulo: string }[] = [
+  { valor: "igualitaria", rotulo: "Igualitária" },
+  { valor: "por_valores", rotulo: "Por valores" },
+];
 
 const FORMATO_DE_VALOR = "Use reais com até 2 casas, como 12,34.";
 
@@ -200,15 +205,8 @@ function LancarDespesa({ aoLancar }: { aoLancar: () => void }) {
       </div>
 
       <fieldset className="flex flex-col gap-3">
-        <legend className="mb-2 text-sm font-medium text-texto">Divisão</legend>
-        <div role="radiogroup" className="flex flex-wrap gap-2">
-          <OpcaoDeModo atual={modo} valor="igualitaria" aoEscolher={setModo}>
-            Igualitária
-          </OpcaoDeModo>
-          <OpcaoDeModo atual={modo} valor="por_valores" aoEscolher={setModo}>
-            Por valores
-          </OpcaoDeModo>
-        </div>
+        <legend className="sr-only">Divisão</legend>
+        <EscolhaDeOpcao rotulo="Divisão" opcoes={OPCOES_DE_MODO} valor={modo} aoEscolher={setModo} />
 
         {modo === "igualitaria" ? (
           <div className="flex flex-col gap-2">
@@ -263,33 +261,5 @@ function LancarDespesa({ aoLancar }: { aoLancar: () => void }) {
         Lançar Despesa
       </Botao>
     </Cartao>
-  );
-}
-
-function OpcaoDeModo({
-  atual,
-  valor,
-  aoEscolher,
-  children,
-}: {
-  atual: Modo;
-  valor: Modo;
-  aoEscolher: (modo: Modo) => void;
-  children: string;
-}) {
-  const marcado = atual === valor;
-  return (
-    <button
-      type="button"
-      role="radio"
-      aria-checked={marcado}
-      onClick={() => aoEscolher(valor)}
-      className={[
-        "h-9 rounded-full border px-4 text-sm font-medium transition-colors duration-200",
-        marcado ? "border-acento bg-acento/15 text-acento" : "border-borda-vidro text-texto-suave hover:text-texto",
-      ].join(" ")}
-    >
-      {children}
-    </button>
   );
 }
